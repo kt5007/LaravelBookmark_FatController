@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers\Bookmarks;
 
 use App\Bookmark\UseCase\CreateBookmarkUseCase;
@@ -23,6 +22,8 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use App\Bookmark\UseCase\ShowBookmarkListPageUseCase;
 use App\Http\Requests\CreateBookmarkRequest;
+use App\Lib\LinkPreview\LinkPreview;
+use App\Lib\LinkPreview\MockLinkPreview;
 
 class BookmarkController extends Controller
 {
@@ -124,9 +125,10 @@ class BookmarkController extends Controller
      * @param Request $request
      * @return Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function create(CreateBookmarkRequest $request)
+    public function create(CreateBookmarkRequest $request, CreateBookmarkUseCase $useCase)
     {
-        $useCase = new CreateBookmarkUseCase();
+        // $useCase = new CreateBookmarkUseCase(new LinkPreview());
+        // $useCase = new CreateBookmarkUseCase(new MockLinkPreview());
         $useCase->handle($request->url, $request->category, $request->comment);
         // 暫定的に成功時は一覧ページへ
         return redirect('/bookmarks', 302);
